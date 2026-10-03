@@ -1,0 +1,46 @@
+name: Contrôles avant livraison
+
+# L'application mobile a son propre dépôt, donc sa propre CI. Sans elle, une
+# erreur de typage ne se voit qu'au moment de construire un binaire — c'est-à-dire
+# le jour où on en a besoin.
+#
+# Pendant du contrôle « Mobile — typage » de la CI de l'ERP (upside-erp).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  qualite:
+    name: Typage, assemblage et sécurité
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Installation (verrouillée)
+        # `npm ci` respecte strictement package-lock.json : deux exécutions
+        # installent le même logiciel, contrairement à `npm install`.
+        run: npm ci
+
+      - name: Typage
+        run: npm run typecheck
+
+      - name: Assemblage réel de l'application
+        # Le typage ne voit pas les modules impossibles à empaqueter. L'export
+        # oblige Metro à parcourir l'application entière, sans publier quoi que
+        # ce soit ni toucher aux utilisateurs.
+        run: npx expo export --platform web --output-dir /tmp/upside-mobile-web
+
+      - name: Aucune vulnérabilité critique connue
+        # Les alertes élevées restantes sont dans PostCSS, utilisé par la chaîne
+        # locale Metro. Leur correctif impose actuellement Expo 57, donc un saut
+        # majeur qui doit être testé séparément. En revanche, toute nouvelle
+        # alerte critique bloque immédiatement la livraison.
+        run: npm audit --omit=dev --audit-level=critical
