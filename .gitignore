@@ -45,3 +45,4 @@ yarn-error.*
 
 # EAS credentials (à ne JAMAIS commiter)
 google-service-account.json
+upside-511110-5cdc1ea39eb0.json
