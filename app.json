@@ -2,7 +2,37 @@
   "expo": {
     "name": "UPSide",
     "slug": "upside-mobile",
-    ...
+    "scheme": "upside",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.upside.mobile",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSCameraUsageDescription": "UPSide utilise l'appareil photo pour prendre des photos des dégâts et des devis lors des interventions, et pour les états des lieux.",
+        "NSPhotoLibraryUsageDescription": "UPSide accède à vos photos pour joindre des photos de dégâts et de devis aux interventions, et aux états des lieux.",
+        "NSPhotoLibraryAddUsageDescription": "UPSide peut enregistrer les documents (PDF de factures, décomptes) dans vos photos.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.upside.mobile",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#00887F",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["android.permission.RECORD_AUDIO"]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "plugins": [
       "expo-secure-store",
       [
@@ -32,6 +62,19 @@
           }
         }
       ]
-    ]
+    ],
+    "extra": {
+      "API_URL": "https://app.upside-gabon.com",
+      "WS_URL": "wss://app.upside-gabon.com",
+      "eas": {
+        "projectId": "755f27a2-726e-45e0-bf96-48effaedaef0"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/755f27a2-726e-45e0-bf96-48effaedaef0"
+    }
   }
 }
